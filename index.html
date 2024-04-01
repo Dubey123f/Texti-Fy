@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Texti-Fy-Play with text</title>
+   
+
+    
+ 
+
+
+    <style>
+       
+        
+#textToRead{
+  width:85%;
+  
+}
+#timer{
+  
+      float: left;
+      font-size: 24px;
+      font-family: 'Arial', sans-serif;
+      background-color: azure;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 10px;
+     
+           
+}
+button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+          
+        }
+
+        button.reset {
+            background-color: #f44336;
+        }
+       
+        #bhatt{
+         
+          background-color:#f44336;
+          display: block;
+            margin: auto;
+            margin-right: 10px;
+          height:50px;
+        }
+        #Ayush{
+          background-color:#f44336;
+          display: block;
+            margin: auto;
+            float: left;
+        }
+        #diw{
+          background-color:#f44336;
+          display: block;
+            margin: auto;
+            margin-right: 10px;
+        }
+        #Ashm{
+          background-color:#f44336;
+          display: block;
+            margin: auto;
+            margin-right: 10px;
+        }
+        #google_translate_element{
+          display: flex;
+           
+            margin-bottom: 50px;
+        }
+        #Ayush{
+         
+          background-color:#f44336;
+          display: block;
+            margin: auto;
+        margin-right: 10px;
+          height:50px;
+       }
+       .button-container {
+      display: flex;
+      margin-bottom: 100px;
+    justify-content: center;
+    padding-left: 10px;
+    float: left;
+    margin-left: 100px;
+    }
+ 
+ #preview {
+    margin-top: 50px;
+  float: left;
+    padding: 10px;
+    margin-right: 500px;
+ }
+
+ #me{
+ 
+  float:left;
+ }
+   
+
+
+    </style>
+    
+  </head>
+  <body>
+  
+     <button onclick="startTimer()">Start</button>
+    <button onclick="stopTimer()">Stop</button>
+    <button onclick="resetTimer()">Reset</button>
+    <div id="timer">00:00:00
+      <h3>Click Start button to start timer</h3>
+    </div>  
+
+
+     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div> 
+
+    <div id="google_translate_element"></div> 
+    
+    <script>
+        let timerInterval;
+        let seconds = 0;
+        let minutes = 0;
+        let hours = 0;
+    
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+    
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+    
+        function resetTimer() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            updateTimer();
+        }
+    
+        function updateTimer() {
+            seconds++;
+    
+            if (seconds === 60) {
+                seconds = 0;
+                minutes++;
+    
+                if (minutes === 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+    
+            const formattedTime = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+            document.getElementById('timer').innerText = formattedTime;
+        }
+    
+        function pad(number) {
+            return (number < 10) ? '0' + number : number;
+        }
+        </script>
+        
+      <div>
+        <label for="textToRead">Text to Read:</label>
+        <textarea id="textToRead" rows="4" cols="50"></textarea>
+    </div>
+    <div class="button-container">
+    <div>
+        <button onclick="readText()" id="bhatt">Read</button>
+        
+    </div>
+    <div><button onclick="makeTextItalic()" id="diw">Make Text italic</button></div>
+    <div> <button onclick="makeTextBold()" id="Ayush">Text Bold</button></div>
+    <div> <button onclick="startSpeechRecognition()" id="Ashm">Start Speech Recognition</button></div>
+    <div> <button onclick="translateText()" id="googleTranslate">Translate</button></div>
+
+
+
+    </div>
+
+    <script>
+        function readText() {
+            var textToRead = document.getElementById('textToRead').value;
+            
+            
+            if ('speechSynthesis' in window) {
+                var synthesis = window.speechSynthesis;
+                var utterance = new SpeechSynthesisUtterance(textToRead);
+
+                
+                synthesis.speak(utterance);
+            } else {
+                alert('Speech synthesis is not supported in this browser.');
+            }
+        }
+        function makeTextBold() {
+      
+      const textElement = document.getElementById('textToRead');
+
+      
+      textElement.style.fontWeight = 'bold';
+
+    }
+    function makeTextItalic() {
+      
+      const textElement = document.getElementById('textToRead');
+
+     
+      textElement.style.fontStyle = 'italic';
+    }
+    </script>
+      
+      
+      
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+      
+    <!-- <button onclick="startSpeechRecognition()" id="Ashm">Start Speech Recognition</button> -->
+ 
+
+  <script>
+    function startSpeechRecognition() {
+      const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+
+      recognition.onstart = () => {
+        console.log('Speech recognition started');
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+       
+        
+        document.getElementById('textToRead').textContent = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+      };
+
+      recognition.onend = () => {
+        console.log('Speech recognition ended');
+      };
+
+      recognition.start();
+    }
+  </script>
+  <div id="me">
+    <div id="preview"></div>
+  </div>
+
+<script>
+  
+ document.getElementById('textToRead').addEventListener('input', (e) => {
+    document.getElementById('preview').innerHTML = e.target.value;
+ });
+
+</script>
+<div id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+ 
+  
+  </body>
+  </html>
